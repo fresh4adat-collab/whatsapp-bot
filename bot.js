@@ -52,7 +52,6 @@ After sending the order, you can continue the chat here for support or updates.
 Thank you 😊`
         );
     }
-
 });
 
 client.initialize();
