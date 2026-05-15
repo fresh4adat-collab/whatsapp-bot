@@ -2,25 +2,25 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
 const client = new Client({
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth(),
+    puppeteer: {
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
 });
 
-// QR Code
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
-// Ready
 client.on('ready', () => {
     console.log('Bot is ready!');
 });
 
-// Message Handler
 client.on('message', async (message) => {
 
     const msg = message.body;
 
-    // Detect Fresh Adat Order Format
     if (
         msg.includes('🌿 FRESH ADAT ORDER') ||
         msg.includes('🛒 Items:') ||
@@ -41,7 +41,6 @@ Thank you for supporting fresh local vegetables 🥬`
 
     } else {
 
-        // Default reply for all other messages
         message.reply(
 `Welcome to Fresh Adat👋
 
@@ -56,5 +55,4 @@ Thank you 😊`
 
 });
 
-// Start Bot
 client.initialize();
