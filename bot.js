@@ -5,16 +5,9 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        executablePath: '/usr/bin/google-chrome',
         args: [
             '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process',
-            '--disable-gpu'
+            '--disable-setuid-sandbox'
         ]
     }
 });
@@ -38,8 +31,8 @@ client.on('message', async (message) => {
         msg.includes('💰 TOTAL:')
     ) {
 
-        message.reply(
-`🌿 Thank you for contacting Puthuma Fresh Adat.
+        await message.reply(
+`🌿 Thank you for contacting Fresh Adat.
 
 Your order has been received ✅
 We’ll check it and reply shortly.
@@ -52,13 +45,14 @@ Thank you for supporting fresh local vegetables 🥬`
 
     } else {
 
-        message.reply(
+        await message.reply(
 `Welcome to Fresh Adat👋
 
 Please place your order through our website first.
 After sending the order, you can continue the chat here for support or updates.
 
-🌐 Order Here: https://freshadat.store
+🌐 Order Here:
+https://freshadat.store
 
 Thank you 😊`
         );
