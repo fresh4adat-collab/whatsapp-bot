@@ -7,7 +7,8 @@ const client = new Client({
         headless: true,
         args: [
             '--no-sandbox',
-            '--disable-setuid-sandbox'
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage'
         ]
     }
 });
@@ -22,7 +23,6 @@ client.on('ready', () => {
 });
 
 client.on('message', async (message) => {
-
     const msg = message.body;
 
     if (
@@ -35,6 +35,7 @@ client.on('message', async (message) => {
 `🌿 Thank you for contacting Fresh Adat.
 
 Your order has been received ✅
+
 We’ll check it and reply shortly.
 
 📍 Delivery available within 5 KM from Adat
@@ -46,9 +47,10 @@ Thank you for supporting fresh local vegetables 🥬`
     } else {
 
         await message.reply(
-`Welcome to Fresh Adat👋
+`Welcome to Fresh Adat 👋
 
 Please place your order through our website first.
+
 After sending the order, you can continue the chat here for support or updates.
 
 🌐 Order Here:
@@ -56,6 +58,7 @@ https://freshadat.store
 
 Thank you 😊`
         );
+
     }
 });
 
