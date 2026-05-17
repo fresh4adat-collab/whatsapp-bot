@@ -1,21 +1,21 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const puppeteer = require('puppeteer');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
+
     puppeteer: {
-    headless: true, 
+        headless: true,
 
-    executablePath: puppeteer.executablePath(),
+        executablePath: '/usr/bin/chromium',
 
-    args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu'
-    ]
-}
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu'
+        ]
+    }
 });
 
 client.on('qr', (qr) => {
