@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-    headless: true,
+    headless: true, 
 
     executablePath: puppeteer.executablePath(),
 
