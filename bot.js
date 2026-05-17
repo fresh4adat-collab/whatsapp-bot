@@ -1,52 +1,11 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const fs = require('fs');
-const path = require('path');
-
-function getChromiumPath() {
-    // Dynamically find puppeteer-installed chrome in Render cache
-    const puppeteerCache = '/opt/render/.cache/puppeteer/chrome';
-    try {
-        if (fs.existsSync(puppeteerCache)) {
-            const versions = fs.readdirSync(puppeteerCache);
-            for (const version of versions) {
-                const chromePath = path.join(puppeteerCache, version, 'chrome-linux64', 'chrome');
-                if (fs.existsSync(chromePath)) {
-                    console.log(`✅ Found browser at: ${chromePath}`);
-                    return chromePath;
-                }
-            }
-        }
-    } catch (e) {
-        console.warn('Cache scan failed:', e.message);
-    }
-
-    // Fallback system paths
-    const candidates = [
-        '/usr/bin/chromium-browser',
-        '/usr/bin/chromium',
-        '/usr/bin/google-chrome-stable',
-        '/usr/bin/google-chrome',
-    ];
-    for (const p of candidates) {
-        if (fs.existsSync(p)) {
-            console.log(`✅ Found browser at: ${p}`);
-            return p;
-        }
-    }
-
-    console.warn('⚠️ No browser found');
-    return undefined;
-}
-
-const executablePath = getChromiumPath();
-console.log('Using browser at:', executablePath);
 
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        executablePath,
+        executablePath: '/opt/render/.cache/puppeteer/chrome/linux-146.0.7680.31/chrome-linux64/chrome',
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
