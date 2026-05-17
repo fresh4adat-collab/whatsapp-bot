@@ -1,5 +1,29 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
+const qrcode = require('qrcode');
+const http = require('http');
+
+let qrImageUrl = null;
+let botReady = false;
+
+// Simple web server to display QR
+http.createServer(async (req, res) => {
+    if (botReady) {
+        res.writeHead(200);
+        res.end('<h1>✅ Bot is connected and running!</h1>');
+    } else if (qrImageUrl) {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(`
+            <h2>Scan this QR with WhatsApp</h2>
+            <img src="${qrImageUrl}" style="width:300px;height:300px"/>
+            <p>Refresh if expired</p>
+        `);
+    } else {
+        res.writeHead(200);
+        res.end('<h1>⏳ Waiting for QR code...</h1>');
+    }
+}).listen(process.env.PORT || 3000, () => {
+    console.log('✅ QR server running');
+});
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -16,13 +40,15 @@ const client = new Client({
     }
 });
 
-client.on('qr', (qr) => {
-    console.log('📱 Scan this QR code:');
-    qrcode.generate(qr, { small: true });
+client.on('qr', async (qr) => {
+    console.log('📱 QR received - open your Render URL to scan');
+    qrImageUrl = await qrcode.toDataURL(qr);
 });
 
 client.on('ready', () => {
     console.log('✅ Bot is ready!');
+    botReady = true;
+    qrImageUrl = null;
 });
 
 client.on('auth_failure', (msg) => {
@@ -31,6 +57,7 @@ client.on('auth_failure', (msg) => {
 
 client.on('disconnected', (reason) => {
     console.warn('⚠️ Disconnected:', reason);
+    botReady = false;
 });
 
 client.on('message', async (message) => {
