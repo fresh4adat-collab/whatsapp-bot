@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js",
-    "postinstall": "PUPPETEER_SKIP_DOWNLOAD=false npx puppeteer browsers install chrome"
+    "start": "node bot.js"
   },
   "dependencies": {
     "puppeteer": "^24.10.2",
