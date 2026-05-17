@@ -1,19 +1,39 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const { execSync } = require('child_process');
+
+// Auto-detect chromium path across environments
+function getChromiumPath() {
+    const candidates = [
+        '/usr/bin/chromium-browser',
+        '/usr/bin/chromium',
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/google-chrome',
+    ];
+    for (const p of candidates) {
+        try {
+            execSync(`test -f ${p}`);
+            return p;
+        } catch {}
+    }
+    // fallback: let puppeteer find it
+    return undefined;
+}
+
+const executablePath = getChromiumPath();
+console.log('Using browser at:', executablePath);
 
 const client = new Client({
     authStrategy: new LocalAuth(),
-
     puppeteer: {
         headless: true,
-
-        executablePath: '/usr/bin/chromium',
-
+        executablePath,           // undefined = puppeteer uses its own bundled chrome
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu'
+            '--disable-gpu',
+            '--disable-software-rasterizer',
         ]
     }
 });
