@@ -2,12 +2,10 @@ services:
   - type: web
     name: whatsapp-bot
     env: node
-    buildCommand: npm install && which chromium-browser || which chromium || which google-chrome-stable
+    buildCommand: apt-get install -y chromium-browser && npm install
     startCommand: node bot.js
     envVars:
       - key: NODE_VERSION
-        value: 20
+        value: "20"
       - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
-        value: true
-    aptPackages:
-      - chromium-browser
+        value: "true"
