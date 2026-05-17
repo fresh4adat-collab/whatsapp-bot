@@ -96,7 +96,9 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
-client.initialize().catch((err) => {
-    console.error('💥 Failed to initialize client:', err);
-    process.exit(1);
-});
+setTimeout(() => {
+    client.initialize().catch((err) => {
+        console.error('💥 Failed to initialize client:', err);
+        process.exit(1);
+    });
+}, 3000);
